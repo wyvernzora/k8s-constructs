@@ -1,0 +1,54 @@
+{
+  "name": "@wyvernzora/k8s-constructs",
+  "version": "1.0.0",
+  "description": "cdk8s constructs for things deployed on my home lab cluster",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npm run lint --fix && tspc -p tsconfig.json",
+    "clean": "rm -rf dist",
+    "lint": "eslint ./src",
+    "lint:fix": "exlint --fix ./src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wyvernzora/k8s-constructs.git"
+  },
+  "author": "Denis Luchkin-Zhou <wyvernzora@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wyvernzora/k8s-constructs/issues"
+  },
+  "homepage": "https://github.com/wyvernzora/k8s-constructs#readme",
+  "devDependencies": {
+    "@types/node": "^20.3.2",
+    "@typescript-eslint/eslint-plugin": "^5.60.1",
+    "@typescript-eslint/parser": "^5.60.1",
+    "eslint": "^8.43.0",
+    "ts-patch": "^3.0.1",
+    "typescript": "^5.1.3",
+    "typescript-transform-paths": "^3.4.6"
+  },
+  "dependencies": {
+    "yaml": "^2.3.1"
+  },
+  "peerDependencies": {
+    "cdk8s": "2.7.99",
+    "cdk8s-plus-26": "2.4.80",
+    "constructs": "10.2.69"
+  },
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./homer": {
+      "default": "./dist/apps/homer/index.js",
+      "types": "./dist/apps/homer/index.d.ts"
+    },
+    "./rflood": {
+      "default": "./dist/apps/rflood/index.js",
+      "types": "./dist/apps/rflood/index.d.ts"
+    }
+  }
+}
