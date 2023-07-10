@@ -1,7 +1,12 @@
 import { Construct } from 'constructs'
 import * as cdk8s from 'cdk8s'
+import { ImageProps } from './deployment'
 
-export type ChartProps = cdk8s.ChartProps
+export interface ChartProps extends cdk8s.ChartProps {
+    readonly image?: {
+        [name: string]: Partial<ImageProps> | undefined
+    }
+}
 
 /**
  * Application metadata used for setting identifier labels:

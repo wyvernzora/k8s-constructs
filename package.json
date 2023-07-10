@@ -4,10 +4,9 @@
   "description": "cdk8s constructs for things deployed on my home lab cluster",
   "main": "dist/index.js",
   "scripts": {
-    "build": "npm run lint --fix && tspc -p tsconfig.json",
+    "build": "npm run lint && tspc -p tsconfig.json",
     "clean": "rm -rf dist",
-    "lint": "eslint ./src",
-    "lint:fix": "exlint --fix ./src",
+    "lint": "eslint --fix ./src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -46,9 +45,9 @@
       "default": "./dist/apps/homer/index.js",
       "types": "./dist/apps/homer/index.d.ts"
     },
-    "./rflood": {
-      "default": "./dist/apps/rflood/index.js",
-      "types": "./dist/apps/rflood/index.d.ts"
+    "./qflood": {
+      "default": "./dist/apps/qflood/index.js",
+      "types": "./dist/apps/qflood/index.d.ts"
     }
   }
 }
