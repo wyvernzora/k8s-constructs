@@ -60,14 +60,14 @@ export class ScalingProps {
         this.strategy = strategy
     }
 
-    static Singleton(): ScalingProps {
+    static singleton(): ScalingProps {
         return {
             replicas: 1,
             strategy: DeploymentStrategy.recreate(),
         }
     }
 
-    static RollingUpdate(replicas: number, options?: RollingUpdateOptions): ScalingProps {
+    static rollingUpdate(replicas: number, options?: RollingUpdateOptions): ScalingProps {
         if (replicas < 1) {
             throw new Error('replica count nust be greater than zero')
         }
