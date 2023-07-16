@@ -3,15 +3,12 @@ import { Construct } from "constructs";
 import { HomerConfig } from "./config";
 import { ImageProps, ScalingProps } from "~/lib";
 
-const DEFAULT_IMAGE: ImageProps = {
-    image: 'ghcr.io/wyvernzora/homer',
-    tag: 'v22.11.2',
-}
+
 
 export interface HomerDeploymentProps extends ResourceProps {
     config: HomerConfig
-    image?: Partial<ImageProps>
-    scaling?: ScalingProps
+    image: ImageProps
+    scaling: ScalingProps
 }
 
 export class HomerDeployment extends Deployment {
@@ -26,9 +23,7 @@ export class HomerDeployment extends Deployment {
         })
         this.scheduling.spread()
 
-        const image = ImageProps.withDefaults(DEFAULT_IMAGE, props.image)
-        this.addHomerContainer(image, props.config)
-
+        this.addHomerContainer(props.image, props.config)
         this.podMetadata.addAnnotation('config-digest', props.config.digest)
     }
 
