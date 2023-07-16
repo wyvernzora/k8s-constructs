@@ -48,6 +48,10 @@
     "./qflood": {
       "default": "./dist/apps/qflood/index.js",
       "types": "./dist/apps/qflood/index.d.ts"
+    },
+    "./uptime-kuma": {
+      "default": "./dist/apps/uptime-kuma/index.js",
+      "types": "./dist/apps/uptime-kuma/index.d.ts"
     }
   }
 }
