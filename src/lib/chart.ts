@@ -1,10 +1,14 @@
 import { Construct } from 'constructs'
 import * as cdk8s from 'cdk8s'
 import { ImageProps } from './deployment'
+import { VolumeProps } from '.'
 
 export interface ChartProps extends cdk8s.ChartProps {
     readonly image?: {
         [name: string]: Partial<ImageProps> | undefined
+    }
+    readonly persistence?: {
+        [name: string]: VolumeProps | undefined
     }
 }
 

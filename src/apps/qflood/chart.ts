@@ -2,34 +2,7 @@ import { Construct } from 'constructs'
 import { Chart, ChartProps } from '../../lib/chart'
 import { EmptyDirMedium, Ingress, IngressBackend, PersistentVolumeAccessMode, PersistentVolumeClaim, Service, Volume } from 'cdk8s-plus-26'
 import { QfloodDeployment } from './deployment'
-import { ImageProps, IngressProps, RunAsProps, ScalingProps } from '~/lib'
-import { Size } from 'cdk8s'
-
-/**
- * Configuration for persisting application data
- */
-export interface QfloodPersistenceProps {
-
-    /**
-     * Configuration for volume to hold configuration metadata.
-     * A PVC will be created based on the storage class name supplied.
-     * This volume is mounted at /config
-     */
-    readonly configVolume: {
-        readonly storageClassName: string
-        readonly storageSize: Size
-    }
-
-    /**
-     * Configuration for volume to hold downloaded data.
-     * This is presumed to be an NFS volume
-     * This volume is mounted at /data
-     */
-    readonly dataVolume?: {
-        readonly server: string
-        readonly path: string
-    }
-}
+import { ImageProps, IngressProps, NfsVolumeProps, PvcVolumeProps, RunAsProps, ScalingProps } from '~/lib'
 
 export interface QfloodChartProps extends ChartProps {
 
@@ -49,12 +22,27 @@ export interface QfloodChartProps extends ChartProps {
     /**
      * Configuration for persisting application data
      */
-    readonly persistence: QfloodPersistenceProps
+    readonly persistence: {
+
+        /**
+         * Configuration for volume to hold configuration metadata.
+         * A PVC will be created based on the storage class name supplied.
+         * This volume is mounted at /config
+         */
+        readonly configVolume: PvcVolumeProps
+
+        /**
+         * Configuration for volume to hold downloaded data.
+         * This is presumed to be an NFS volume
+         * This volume is mounted at /data
+         */
+        readonly dataVolume?: NfsVolumeProps
+    }
 
     /**
      * Configuration for application ingress
      */
-    ingress?: IngressProps
+    readonly ingress?: IngressProps
 }
 
 const DEFAULT_IMAGE: ImageProps = {
@@ -102,7 +90,7 @@ export class QfloodChart extends Chart {
         }
     }
 
-    private createConfigVolume(config: QfloodPersistenceProps['configVolume']): Volume {
+    private createConfigVolume(config: PvcVolumeProps): Volume {
         const pvc = new PersistentVolumeClaim(this, 'config-pvc', {
             storageClassName: config.storageClassName,
             storage: config.storageSize,
@@ -111,7 +99,7 @@ export class QfloodChart extends Chart {
         return Volume.fromPersistentVolumeClaim(this, 'config-volume', pvc)
     }
 
-    private createDataVolume(config: QfloodPersistenceProps['dataVolume']): Volume {
+    private createDataVolume(config?: NfsVolumeProps): Volume {
         const volume = Volume.fromEmptyDir(this, 'data-volume', 'data-volume', {
             medium: EmptyDirMedium.MEMORY,
         })
